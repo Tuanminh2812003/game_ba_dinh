@@ -92,7 +92,7 @@ function LayoutDefault(){
                                     <img src="/logo.png"/>
                                 </Link>
                                 <div className="Web__header__inner__menu">
-                                    <Link to={"/"} className="Web__header__inner__menu__item">
+                                    <Link to={"https://www.facebook.com/profile.php?id=61571591819605"} className="Web__header__inner__menu__item">
                                         <div className="Web__header__inner__menu__item__icon">
                                             <FaFacebook />
                                         </div>
@@ -100,7 +100,7 @@ function LayoutDefault(){
                                             Den Quan Thanh
                                         </div>
                                     </Link>
-                                    <Link to={"/"} className="Web__header__inner__menu__item">
+                                    <Link to={"https://visitbadinh.com.vn/vi/place/details/den-quan-thanh-35"} className="Web__header__inner__menu__item">
                                         <div className="Web__header__inner__menu__item__icon">
                                             <MdLanguage />
                                         </div>
@@ -125,9 +125,9 @@ function LayoutDefault(){
                             <div className="Web__footer__inner">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <div className="Web__footer__inner__logo">
+                                        <Link to={"/"} className="Web__footer__inner__logo">
                                             <img src="/logo2.png"/>
-                                        </div>
+                                        </Link>
                                         
                                     </div>
                                     <div className="col-md-3">
