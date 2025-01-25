@@ -174,7 +174,7 @@ function Card1() {
                                     onClick={handleDownload}
                                 >
                                     <div className="Card__inner__btn__btn2__download__text">
-                                        DOWNLOAD
+                                        TẢI XUỐNG
                                     </div>
                                     <div className="Card__inner__btn__btn2__download__icon">
                                         <IoMdDownload />
