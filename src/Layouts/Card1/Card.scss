@@ -1,0 +1,245 @@
+$Color-title: #2E2E2E;
+$Color-text: #515151;
+
+.Card{
+    display: flex;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+
+    &__inner{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        padding: 46px;
+
+        &__image{
+            width: 70%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+
+            img{
+                width: 100%;
+                height: auto;
+            }
+
+            &__text{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 15% 6% 6% 6%;
+
+                textArea{
+                    width: 60%;
+                    height: 100%;
+                    display: flex;
+                    border: 0px;
+                    opacity: 0.8;
+                    border-radius: 24px;
+                    padding: 16px;
+                    color: white;
+                    font-size: 24px;
+                }
+            }
+        }
+        &__btn{
+            display: flex;
+            margin-top: 16px;
+            align-items: center;
+            justify-content: space-between;
+            width: 70%;
+
+            &__btn1{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 4px 16px;
+                color: $Color-title;
+                text-decoration: none;
+                border: 2px solid $Color-title;
+                border-radius: 100px;
+                transition: all ease-in 0.2s;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: $Color-title;
+                    color: white;
+                    transition: all ease-in 0.2s;
+                }
+
+                &__icon{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 4px;
+                }
+            }
+
+            &__color2{
+                display: flex;
+
+                &__red{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 100px;
+                    transition: all ease-in 0.2s;
+                    background-color: #CC464B;
+                    cursor: pointer;
+                    opacity: 0.5;
+                    transition: all ease-in 0.2s;
+                    &:hover{
+                        opacity: 1;
+                        transition: all ease-in 0.2s;
+                    }
+                }
+                &__green{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 100px;
+                    transition: all ease-in 0.2s;
+                    background-color: #3C5635;
+                    margin-left: 16px;
+                    opacity: 1;
+                    transition: all ease-in 0.2s;
+                    cursor: pointer;
+                }
+            }
+
+            &__color{
+                display: flex;
+
+                &__red{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 100px;
+                    transition: all ease-in 0.2s;
+                    background-color: #CC464B;
+                    cursor: pointer;
+                }
+                &__green{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 100px;
+                    transition: all ease-in 0.2s;
+                    background-color: #3C5635;
+                    margin-left: 16px;
+                    opacity: 0.5;
+                    transition: all ease-in 0.2s;
+                    cursor: pointer;
+
+                    &:hover{
+                        opacity: 1;
+                        transition: all ease-in 0.2s;
+                    }
+                }
+            }
+
+            &__btn2{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                &__download{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    background-color: $Color-title;
+                    padding: 4px 16px;
+                    border-radius: 100px;
+                    border-radius: 2px solid $Color-title;
+                    cursor: pointer;
+                    border: solid 2px $Color-title;
+                    transition: all ease-in 0.2s;
+
+                    &:hover{
+                        background-color: white;
+                        transition: all ease-in 0.2s;
+                        color: $Color-title;
+                    }
+
+                    &__icon{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-left: 4px;
+                    }
+                }
+                &__share{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: $Color-title;
+                    background-color: white;
+                    padding: 4px 16px;
+                    border-radius: 100px;
+                    border-radius: 2px solid $Color-title;
+                    cursor: pointer;
+                    margin-left: 16px;
+                    border: solid 2px $Color-title;
+                    transition: all ease-in 0.2s;
+
+                    &:hover{
+                        background-color: $Color-title;
+                        transition: all ease-in 0.2s;
+                        color: white;
+                    }
+
+                    &__icon{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-left: 4px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.hide{
+    display: none;
+}
+
+@media(max-width: 950px){
+    .nohide{
+        display: none;
+    }
+    .hide{
+        display: flex;
+    }
+    textArea{
+        font-size: 14px !important;
+    }
+    .Card__inner__image{
+        width: 100%;
+    }
+    .Card__inner__btn{
+        width: 100%;
+    }
+    .Card__inner{
+        padding: 24px 0px;
+    }
+}
