@@ -5,6 +5,7 @@ import LayoutDefault from './Layouts/LayoutDefault';
 import Game from './Layouts/Game';
 import Card1 from './Layouts/Card1';
 import Card2 from './Layouts/Card2';
+import Leaderboard from './Layouts/Leaderboard';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/game" element={<Game />} />
           <Route path="/card1" element={<Card1 />} />
           <Route path="/card2" element={<Card2 />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
       </Routes>
     </>

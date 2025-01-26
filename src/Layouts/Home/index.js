@@ -19,6 +19,14 @@ function Home() {
                                 <FaArrowRight />
                             </div>
                         </Link>
+                        <Link to="/leaderboard" className="Home__inner__btn">
+                            <div className="Home__inner__btn__text">
+                                XEM BẢNG XẾP HẠNG
+                            </div>
+                            <div className="Home__inner__btn__icon">
+                                <FaArrowRight />
+                            </div>
+                        </Link>
                         <Link to="/card1" className="Home__inner__btn">
                             <div className="Home__inner__btn__text">
                                 VIẾT THIỆP CHÚC TẾT
