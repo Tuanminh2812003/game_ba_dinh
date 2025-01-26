@@ -131,7 +131,7 @@ function LayoutDefault(){
                                         
                                     </div>
                                     <div className="col-md-3">
-                                        <Link to={"/space/nghe_thuat_sang_tao"} className="Web__footer__inner__text">
+                                        <Link to={"/"} className="Web__footer__inner__text">
                                             <div className="Web__footer__inner__text__icon">
                                                 <FiMapPin />
                                             </div>
@@ -139,7 +139,7 @@ function LayoutDefault(){
                                                 Đ. Thanh Niên, Quán Thánh, Ba Đình, Hà Nội
                                             </div>
                                         </Link>
-                                        <Link to={"/space/dem_day_sao"} className="Web__footer__inner__text">
+                                        <Link to={"/"} className="Web__footer__inner__text">
                                             <div className="Web__footer__inner__text__icon">
                                                 <CiMail />
                                             </div>
@@ -149,7 +149,7 @@ function LayoutDefault(){
                                         </Link>
                                     </div>
                                     <div className="col-md-3">
-                                        <Link to={"/contact"} className="Web__footer__inner__title">
+                                        <Link to={"/"} className="Web__footer__inner__title">
                                             LIÊN HỆ VỚI CHÚNG TÔI
                                         </Link>
                                         <div className="Web__footer__inner__icon">

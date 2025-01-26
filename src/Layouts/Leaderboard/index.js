@@ -45,7 +45,9 @@ const Leaderboard = () => {
     if (error) return <div className="error">Lỗi: {error}</div>;
 
     return (
-        <div className="leaderboard-container">
+        <div className="leaderboard">
+
+<div className="leaderboard-container">
             <h1 className="leaderboard-title">Bảng Xếp Hạng</h1>
             <div className="search-container">
                 <input
@@ -75,6 +77,8 @@ const Leaderboard = () => {
                     ))}
                 </tbody>
             </table>
+        </div>
+
         </div>
     );
 };

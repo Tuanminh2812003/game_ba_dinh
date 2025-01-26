@@ -1,8 +1,16 @@
+.leaderboard{
+    width: 100%;
+    display: flex;
+    background-image: url('../../../public/Home-1.png');
+    background-size: cover;
+    background-position: center;
+}
+
 .leaderboard-container {
-    max-width: 800px;
+    width: 80%;
     margin: 50px auto;
     text-align: center;
-    font-family: "Arial", sans-serif;
+    overflow: auto;
 }
 
 .leaderboard-title {
