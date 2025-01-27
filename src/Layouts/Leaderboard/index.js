@@ -13,7 +13,7 @@ const Leaderboard = () => {
         const fetchLeaderboard = async () => {
             try {
                 const response = await fetch(
-                    "https://game-ba-dinh.vercel.app/api/v1/user/leaderboard-50"
+                    "https://game-ba-dinh.vercel.app/api/v1/user/leaderboard-100"
                 );
                 if (!response.ok) {
                     throw new Error("Failed to fetch leaderboard data.");
