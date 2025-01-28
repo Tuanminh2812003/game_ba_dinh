@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Game.scss";
 
 function Game() {
     const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
