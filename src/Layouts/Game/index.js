@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import "./Game.scss";
+import React, { useEffect, useState, useRef } from "react";
 
 function Game() {
     const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
+    const iframeRef = useRef();
 
     useEffect(() => {
         // Hàm kiểm tra hướng màn hình
@@ -19,8 +19,27 @@ function Game() {
         };
     }, []);
 
+    useEffect(() => {
+        // Kích hoạt chế độ fullscreen khi iframe sẵn sàng
+        if (iframeRef.current) {
+            const iframeElement = iframeRef.current;
+            if (iframeElement.requestFullscreen) {
+                iframeElement.requestFullscreen();
+            } else if (iframeElement.webkitRequestFullscreen) {
+                // Safari
+                iframeElement.webkitRequestFullscreen();
+            } else if (iframeElement.mozRequestFullScreen) {
+                // Firefox
+                iframeElement.mozRequestFullScreen();
+            } else if (iframeElement.msRequestFullscreen) {
+                // IE/Edge
+                iframeElement.msRequestFullscreen();
+            }
+        }
+    }, []); // Chỉ chạy một lần khi component được render
+
     return (
-        <>
+        <div style={{ width: "100%", height: "100vh", overflow: "hidden", position: "relative" }}>
             {!isLandscape && (
                 <div
                     style={{
@@ -41,12 +60,13 @@ function Game() {
                 </div>
             )}
             <iframe
+                ref={iframeRef}
                 src="https://unity-game-ba-dinh-3.vercel.app/"
-                style={{ width: "100%", height: "90vh", border: "none" }}
+                style={{ width: "100%", height: "100%", border: "none" }}
                 title="Unity Game"
                 allow="fullscreen"
             ></iframe>
-        </>
+        </div>
     );
 }
 
