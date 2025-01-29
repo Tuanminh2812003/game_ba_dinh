@@ -3,43 +3,34 @@ import "./Card.scss";
 import { IoMdDownload } from "react-icons/io";
 import { FaShareAlt } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 
 function Card1() {
     const imageRef = useRef(); // Tham chiếu đến phần Card__inner__image
+    const [previewImage, setPreviewImage] = useState(null); // State lưu ảnh xem trước
 
-    const handleDownload = async () => {
+    const handleCapture = async () => {
         if (imageRef.current) {
             const canvas = await html2canvas(imageRef.current, {
                 useCORS: true, // Hỗ trợ tải ảnh từ nguồn ngoài (nếu có)
                 backgroundColor: null, // Giữ nền trong suốt
                 scale: 2, // Tăng độ phân giải ảnh
             });
-    
+
             const image = canvas.toDataURL("image/png");
-    
-            // Mở tab mới
-            const newTab = window.open();
-            if (newTab) {
-                newTab.document.write(`
-                    <html>
-                        <head>
-                            <title>Tải ảnh</title>
-                        </head>
-                        <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
-                            <p style="font-size: 18px; text-align: center;">Nhấn chuột phải vào ảnh (hoặc nhấn giữ trên điện thoại) để tải xuống</p>
-                            <img src="${image}" style="width: auto; height: 70vh; margin-bottom: 10px;" />
-                            <br/>
-                            <a href="${image}" download="Mung_xuan_at_ty_2025.png" style="font-size: 20px; font-weight: bold; color: blue; text-decoration: none;">
-                                👉 Nhấn vào đây để tải xuống 👈
-                            </a>
-                        </body>
-                    </html>
-                `);
-            } else {
-                alert("Trình duyệt của bạn đã chặn cửa sổ bật lên. Hãy cho phép mở tab mới để tải ảnh.");
-            }
+            setPreviewImage(image); // Lưu ảnh vào state để hiển thị trong popup
+        }
+    };
+
+    const handleDownload = () => {
+        if (previewImage) {
+            const link = document.createElement("a");
+            link.href = previewImage;
+            link.download = "Mung_xuan_at_ty_2025.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     };
 
@@ -132,7 +123,7 @@ function Card1() {
                             <div className="Card__inner__btn__btn2" style={{width: "100%", flexDirection: "column"}}>
                                 <button
                                     className="Card__inner__btn__btn2__download"
-                                    onClick={handleDownload}
+                                    onClick={handleCapture}
                                 >
                                     <div className="Card__inner__btn__btn2__download__text">
                                         TẢI XUỐNG
@@ -177,7 +168,7 @@ function Card1() {
                             <div className="Card__inner__btn__btn2">
                                 <button
                                     className="Card__inner__btn__btn2__download"
-                                    onClick={handleDownload}
+                                    onClick={handleCapture}
                                 >
                                     <div className="Card__inner__btn__btn2__download__text">
                                         TẢI XUỐNG
@@ -202,6 +193,19 @@ function Card1() {
                     </div>
                 </div>
             </div>
+
+            {previewImage && (
+                <div className="preview-popup">
+                    <div className="preview-popup-content">
+                        <h2>Xem Trước Ảnh</h2>
+                        <img src={previewImage} alt="Preview" />
+                        <div className="preview-popup-buttons">
+                            <button onClick={() => setPreviewImage(null)}>Đóng</button>
+                            <button onClick={handleDownload}>Tải Xuống</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
