@@ -13,7 +13,7 @@ const Leaderboard = () => {
         const fetchLeaderboard = async () => {
             try {
                 const response = await fetch(
-                    "http://quanthanhtemple.wifimedia.vn/api/api/v1/user/"
+                    "https://quanthanhtemple.wifimedia.vn/api/api/v1/user/leaderboard-100"
                 );
                 if (!response.ok) {
                     throw new Error("Failed to fetch leaderboard data.");

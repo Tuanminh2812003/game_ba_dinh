@@ -1,71 +1,99 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function Game() {
-    const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
-    const iframeRef = useRef();
+    const unityCanvasRef = useRef(null);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        // Hàm kiểm tra hướng màn hình
-        const checkOrientation = () => {
-            setIsLandscape(window.innerWidth > window.innerHeight);
+        const loadUnity = async () => {
+            if (window.createUnityInstance) {
+                try {
+                    const config = {
+                        dataUrl: "/unity/Build/GameBaDinh3.data",
+                        frameworkUrl: "/unity/Build/GameBaDinh3.framework.js",
+                        codeUrl: "/unity/Build/GameBaDinh3.wasm",
+                        streamingAssetsUrl: "/unity/StreamingAssets",
+                        companyName: "DefaultCompany",
+                        productName: "Game-VirtualGallery",
+                        productVersion: "1.0",
+                        showBanner: (msg, type) => console.log(msg, type),
+                    };
+
+                    const unityInstance = await window.createUnityInstance(
+                        unityCanvasRef.current,
+                        config,
+                        (progress) => {
+                            console.log(`Loading progress: ${progress * 100}%`);
+                        }
+                    );
+
+                    setIsLoaded(true);
+                } catch (error) {
+                    console.error("Failed to load Unity:", error);
+                }
+            }
         };
 
-        // Lắng nghe sự kiện resize để phát hiện thay đổi hướng
-        window.addEventListener("resize", checkOrientation);
+        // Load Unity Loader Script
+        const script = document.createElement("script");
+        script.src = "/unity/Build/GameBaDinh3.loader.js";
+        script.onload = loadUnity;
+        document.body.appendChild(script);
 
-        // Cleanup sự kiện
         return () => {
-            window.removeEventListener("resize", checkOrientation);
+            document.body.removeChild(script);
         };
     }, []);
 
-    useEffect(() => {
-        // Kích hoạt chế độ fullscreen khi iframe sẵn sàng
-        if (iframeRef.current) {
-            const iframeElement = iframeRef.current;
-            if (iframeElement.requestFullscreen) {
-                iframeElement.requestFullscreen();
-            } else if (iframeElement.webkitRequestFullscreen) {
-                // Safari
-                iframeElement.webkitRequestFullscreen();
-            } else if (iframeElement.mozRequestFullScreen) {
-                // Firefox
-                iframeElement.mozRequestFullScreen();
-            } else if (iframeElement.msRequestFullscreen) {
-                // IE/Edge
-                iframeElement.msRequestFullscreen();
+    // 🔹 Hàm bật chế độ Fullscreen
+    const handleFullScreen = () => {
+        if (unityCanvasRef.current) {
+            if (unityCanvasRef.current.requestFullscreen) {
+                unityCanvasRef.current.requestFullscreen();
+            } else if (unityCanvasRef.current.mozRequestFullScreen) { // Firefox
+                unityCanvasRef.current.mozRequestFullScreen();
+            } else if (unityCanvasRef.current.webkitRequestFullscreen) { // Chrome, Safari
+                unityCanvasRef.current.webkitRequestFullscreen();
+            } else if (unityCanvasRef.current.msRequestFullscreen) { // IE/Edge
+                unityCanvasRef.current.msRequestFullscreen();
             }
         }
-    }, []); // Chỉ chạy một lần khi component được render
+    };
 
     return (
-        <div style={{ width: "100%", height: "100vh", overflow: "hidden", position: "relative" }}>
-            {!isLandscape && (
-                <div
+        <div style={{ width: "100%", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+            <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
+                {!isLoaded && <p>Loading Unity Game...</p>}
+                <button 
+                    onClick={handleFullScreen} 
                     style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100vw",
-                        height: "100vh",
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        zIndex: 9999,
+                        position: "absolute",
+                        top: "0",
+                        right: "0",
+                        padding: "10px 20px",
+                        fontSize: "16px",
+                        backgroundColor: "#007bff",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        transition: "0.3s",
                     }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = "#0056b3"}
+                    onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
                 >
-                    <p>Vui lòng xoay ngang thiết bị của bạn để chơi game</p>
-                </div>
-            )}
-            <iframe
-                ref={iframeRef}
-                src="https://unity-game-ba-dinh-3.vercel.app/"
-                style={{ width: "100%", height: "100%", border: "none" }}
-                title="Unity Game"
-                allow="fullscreen"
-            ></iframe>
+                    Fullscreen
+                </button>
+                <canvas
+                    ref={unityCanvasRef}
+                    id="unity-canvas"
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        display: isLoaded ? "block" : "none",
+                    }}
+                ></canvas>
+            </div>
         </div>
     );
 }
