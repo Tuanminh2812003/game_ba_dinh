@@ -5,6 +5,19 @@ function Game() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
     const [isMobile, setIsMobile] = useState(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    const [hidePopup, setHidePopup] = useState(false); // Trạng thái ẩn pop-up
+
+    useEffect(() => {
+        const checkOrientation = () => {
+            setIsLandscape(window.innerWidth > window.innerHeight);
+        };
+
+        window.addEventListener("resize", checkOrientation);
+
+        return () => {
+            window.removeEventListener("resize", checkOrientation);
+        };
+    }, []);
 
     useEffect(() => {
         const loadUnity = async () => {
@@ -47,15 +60,6 @@ function Game() {
         };
     }, []);
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsLandscape(window.innerWidth > window.innerHeight);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
     // 🔹 Hàm bật chế độ Fullscreen + Kích hoạt bàn phím
     const handleFullScreen = () => {
         if (unityCanvasRef.current) {
@@ -78,36 +82,57 @@ function Game() {
     };
 
     return (
-        <div 
-            className="game-container"
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                overflow: "hidden",
-            }}
-        >
-            <div 
-                className="canvas-container"
-                style={{
-                    width: isMobile ? (isLandscape ? "80vw" : "100vh") : "80vw",
-                    height: isMobile ? (isLandscape ? "auto" : "100vw") : "auto",
-                    transform: isMobile && !isLandscape ? "rotate(90deg)" : "none",
-                    transformOrigin: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "relative",
-                }}
-            >
-                {!isLoaded && <p style={{ color: "white" }}>Loading Unity Game...</p>}
+        <div style={{ width: "100%", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+            {isMobile && !isLandscape && !hidePopup && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0, 0, 0, 0.85)",
+                        color: "#fff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 9999,
+                        flexDirection: "column",
+                        textAlign: "center",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                    }}
+                >
+                    <p>📱 Xoay ngang màn hình để có trải nghiệm tốt hơn 🎮</p>
+                    <button
+                        onClick={() => setHidePopup(true)}
+                        style={{
+                            marginTop: "20px",
+                            padding: "10px 20px",
+                            fontSize: "16px",
+                            backgroundColor: "#ff4d4d",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            transition: "0.3s",
+                        }}
+                        onMouseOver={(e) => e.target.style.backgroundColor = "#cc0000"}
+                        onMouseOut={(e) => e.target.style.backgroundColor = "#ff4d4d"}
+                    >
+                        Đóng
+                    </button>
+                </div>
+            )}
+
+            <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
+                {!isLoaded && <p>Loading Unity Game...</p>}
                 <button 
                     onClick={handleFullScreen} 
                     style={{
                         position: "absolute",
-                        top: "10px",
-                        right: "10px",
+                        top: "0",
+                        right: "0",
                         padding: "10px 20px",
                         fontSize: "16px",
                         backgroundColor: "#007bff",
