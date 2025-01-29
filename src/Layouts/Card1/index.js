@@ -12,16 +12,33 @@ function Card1() {
     const handleDownload = async () => {
         if (imageRef.current) {
             const canvas = await html2canvas(imageRef.current, {
-                useCORS: true, // Cho phép tải ảnh từ nguồn khác (nếu có)
-                backgroundColor: null, // Bỏ nền trắng mặc định
+                useCORS: true, // Hỗ trợ tải ảnh từ nguồn ngoài (nếu có)
+                backgroundColor: null, // Giữ nền trong suốt
+                scale: 2, // Tăng độ phân giải ảnh
             });
+
             const image = canvas.toDataURL("image/png");
 
-            // Tạo liên kết tải xuống
-            const link = document.createElement("a");
-            link.download = "Mung_xuan_at_ty_2025.png";
-            link.href = image;
-            link.click();
+            // Mở ảnh trong tab mới thay vì tải trực tiếp
+            const newTab = window.open();
+            if (newTab) {
+                newTab.document.write(`
+                    <html>
+                        <head>
+                            <title>Tải ảnh</title>
+                        </head>
+                        <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+                            <img src="${image}" style="width: auto; height:80vh;" />
+                            <br/>
+                            <a href="${image}" download="Mung_xuan_at_ty_2025.png" style="display:block; text-align:center; font-size:20px; font-weight:bold; margin-top:10px;">
+                                Nhấn vào đây để tải xuống
+                            </a>
+                        </body>
+                    </html>
+                `);
+            } else {
+                alert("Trình duyệt của bạn đã chặn cửa sổ bật lên. Hãy cho phép mở tab mới để tải ảnh.");
+            }
         }
     };
 
@@ -77,7 +94,27 @@ function Card1() {
         <>
             <div className="Card" style={{backgroundImage: "url('/Home-2.png')"}}>
                 <div className="container-main">
-                    <div className="Card__inner nohide">
+                    <div className="Card__inner">
+                    <div className="Card__inner__btn hide" style={{marginBottom: "16px"}}>
+                            <Link to={"/"} className="Card__inner__btn__btn1">
+                                <div className="Card__inner__btn__btn1__icon">
+                                    <IoIosArrowBack />
+                                </div>
+                                <div className="Card__inner__btn__btn1__text">
+                                    Quay lại
+                                </div>
+                            </Link>
+                            <div className="Card__inner__btn__color">
+                                <Link
+                                    to="/card1"
+                                    className="Card__inner__btn__color__red"
+                                ></Link>
+                                <Link
+                                    to="/card2"
+                                    className="Card__inner__btn__color__green"
+                                ></Link>
+                            </div>
+                        </div>
                         <div className="Card__inner__image" ref={imageRef}>
                             {/* Phần chỉ định được tải */}
                             <img src="/card1.png" alt="Background" />
@@ -89,7 +126,35 @@ function Card1() {
                                 <div className="Card__inner__image__text__back"></div>
                             </div>
                         </div>
-                        <div className="Card__inner__btn">
+                        <div className="Card__inner__btn hide">
+                            
+                            <div className="Card__inner__btn__btn2" style={{width: "100%", flexDirection: "column"}}>
+                                <button
+                                    className="Card__inner__btn__btn2__download"
+                                    onClick={handleDownload}
+                                >
+                                    <div className="Card__inner__btn__btn2__download__text">
+                                        TẢI XUỐNG
+                                    </div>
+                                    <div className="Card__inner__btn__btn2__download__icon">
+                                        <IoMdDownload />
+                                    </div>
+                                </button>
+                                <div
+                                    className="Card__inner__btn__btn2__share"
+                                    onClick={handleShare}
+                                    style={{margin: "8px 0px"}}
+                                >
+                                    <div className="Card__inner__btn__btn2__download__text">
+                                        CHIA SẺ
+                                    </div>
+                                    <div className="Card__inner__btn__btn2__download__icon">
+                                        <FaShareAlt />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="Card__inner__btn nohide">
                             <Link to={"/"} className="Card__inner__btn__btn1">
                                 <div className="Card__inner__btn__btn1__icon">
                                     <IoIosArrowBack />
@@ -109,67 +174,7 @@ function Card1() {
                                 ></Link>
                             </div>
                             <div className="Card__inner__btn__btn2">
-                                <div
-                                    className="Card__inner__btn__btn2__download"
-                                    onClick={handleDownload}
-                                >
-                                    <div className="Card__inner__btn__btn2__download__text">
-                                        DOWNLOAD
-                                    </div>
-                                    <div className="Card__inner__btn__btn2__download__icon">
-                                        <IoMdDownload />
-                                    </div>
-                                </div>
-                                <div
-                                    className="Card__inner__btn__btn2__share"
-                                    onClick={handleShare}
-                                >
-                                    <div className="Card__inner__btn__btn2__download__text">
-                                        CHIA SẺ
-                                    </div>
-                                    <div className="Card__inner__btn__btn2__download__icon">
-                                        <FaShareAlt />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="Card__inner hide">
-                        <div className="Card__inner__btn" style={{marginBottom: "16px"}}>
-                            <Link to={"/"} className="Card__inner__btn__btn1">
-                                <div className="Card__inner__btn__btn1__icon">
-                                    <IoIosArrowBack />
-                                </div>
-                                <div className="Card__inner__btn__btn1__text">
-                                    Quay lại
-                                </div>
-                            </Link>
-                            <div className="Card__inner__btn__color">
-                                <Link
-                                    to="/card1"
-                                    className="Card__inner__btn__color__red"
-                                ></Link>
-                                <Link
-                                    to="/card2"
-                                    className="Card__inner__btn__color__green"
-                                ></Link>
-                            </div>
-                        </div>
-                        <div className="Card__inner__image" ref={imageRef}>
-                            {/* Phần chỉ định được tải */}
-                            <img src="/card1.png" alt="Background" />
-                            <div className="Card__inner__image__text">
-                                <textarea
-                                    placeholder="Nhập lời chúc của bạn"
-                                    style={{ backgroundColor: "#CA4B49" }}
-                                ></textarea>
-                                <div className="Card__inner__image__text__back"></div>
-                            </div>
-                        </div>
-                        <div className="Card__inner__btn">
-                            
-                            <div className="Card__inner__btn__btn2" style={{width: "100%", flexDirection: "column"}}>
-                                <div
+                                <button
                                     className="Card__inner__btn__btn2__download"
                                     onClick={handleDownload}
                                 >
@@ -179,11 +184,10 @@ function Card1() {
                                     <div className="Card__inner__btn__btn2__download__icon">
                                         <IoMdDownload />
                                     </div>
-                                </div>
+                                </button>
                                 <div
                                     className="Card__inner__btn__btn2__share"
                                     onClick={handleShare}
-                                    style={{margin: "8px 0px"}}
                                 >
                                     <div className="Card__inner__btn__btn2__download__text">
                                         CHIA SẺ
