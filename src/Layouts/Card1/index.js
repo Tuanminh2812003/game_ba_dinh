@@ -16,10 +16,10 @@ function Card1() {
                 backgroundColor: null, // Giữ nền trong suốt
                 scale: 2, // Tăng độ phân giải ảnh
             });
-
+    
             const image = canvas.toDataURL("image/png");
-
-            // Mở ảnh trong tab mới thay vì tải trực tiếp
+    
+            // Mở tab mới
             const newTab = window.open();
             if (newTab) {
                 newTab.document.write(`
@@ -28,10 +28,11 @@ function Card1() {
                             <title>Tải ảnh</title>
                         </head>
                         <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
-                            <img src="${image}" style="width: auto; height:80vh;" />
+                            <p style="font-size: 18px; text-align: center;">Nhấn chuột phải vào ảnh (hoặc nhấn giữ trên điện thoại) để tải xuống</p>
+                            <img src="${image}" style="width: auto; height: 70vh; margin-bottom: 10px;" />
                             <br/>
-                            <a href="${image}" download="Mung_xuan_at_ty_2025.png" style="display:block; text-align:center; font-size:20px; font-weight:bold; margin-top:10px;">
-                                Nhấn vào đây để tải xuống
+                            <a href="${image}" download="Mung_xuan_at_ty_2025.png" style="font-size: 20px; font-weight: bold; color: blue; text-decoration: none;">
+                                👉 Nhấn vào đây để tải xuống 👈
                             </a>
                         </body>
                     </html>
