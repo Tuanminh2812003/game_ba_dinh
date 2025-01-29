@@ -7,17 +7,6 @@ function Game() {
     const [isMobile, setIsMobile] = useState(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
 
     useEffect(() => {
-        const checkOrientation = () => {
-            setIsLandscape(window.innerWidth > window.innerHeight);
-        };
-
-        window.addEventListener("resize", checkOrientation);
-
-        return () => {
-            window.removeEventListener("resize", checkOrientation);
-        };
-    }, []);
-    useEffect(() => {
         const loadUnity = async () => {
             if (window.createUnityInstance) {
                 try {
@@ -32,7 +21,7 @@ function Game() {
                         showBanner: (msg, type) => console.log(msg, type),
                     };
 
-                    const unityInstance = await window.createUnityInstance(
+                    await window.createUnityInstance(
                         unityCanvasRef.current,
                         config,
                         (progress) => {
@@ -58,6 +47,15 @@ function Game() {
         };
     }, []);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsLandscape(window.innerWidth > window.innerHeight);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     // 🔹 Hàm bật chế độ Fullscreen + Kích hoạt bàn phím
     const handleFullScreen = () => {
         if (unityCanvasRef.current) {
@@ -80,39 +78,36 @@ function Game() {
     };
 
     return (
-        <div style={{ width: "100%", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-            {isMobile && !isLandscape && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100vw",
-                        height: "100vh",
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        zIndex: 9999,
-                        flexDirection: "column",
-                        textAlign: "center",
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                    }}
-                >
-                    <p>📱 Vui lòng xoay ngang thiết bị của bạn để chơi game 🎮</p>
-                </div>
-            )}
-            
-            <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
-                {!isLoaded && <p>Loading Unity Game...</p>}
+        <div 
+            className="game-container"
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                overflow: "hidden",
+            }}
+        >
+            <div 
+                className="canvas-container"
+                style={{
+                    width: isMobile ? (isLandscape ? "80vw" : "100vh") : "80vw",
+                    height: isMobile ? (isLandscape ? "auto" : "100vw") : "auto",
+                    transform: isMobile && !isLandscape ? "rotate(90deg)" : "none",
+                    transformOrigin: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "relative",
+                }}
+            >
+                {!isLoaded && <p style={{ color: "white" }}>Loading Unity Game...</p>}
                 <button 
                     onClick={handleFullScreen} 
                     style={{
                         position: "absolute",
-                        top: "0",
-                        right: "0",
+                        top: "10px",
+                        right: "10px",
                         padding: "10px 20px",
                         fontSize: "16px",
                         backgroundColor: "#007bff",
