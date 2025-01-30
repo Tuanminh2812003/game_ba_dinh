@@ -3,12 +3,21 @@ import "./Card.scss";
 import { IoMdDownload } from "react-icons/io";
 import { FaShareAlt } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 
 function Card1() {
     const imageRef = useRef(); // Tham chiếu đến phần Card__inner__image
     const [previewImage, setPreviewImage] = useState(null); // State lưu ảnh xem trước
+    const [isFacebookBrowser, setIsFacebookBrowser] = useState(false);
+
+    useEffect(() => {
+        // Kiểm tra xem có đang chạy trong trình duyệt của Facebook không
+        const ua = navigator.userAgent || navigator.vendor;
+        if (ua.includes("FBAN") || ua.includes("FBAV")) {
+            setIsFacebookBrowser(true);
+        }
+    }, []);
 
     const handleCapture = async () => {
         if (imageRef.current) {
@@ -84,6 +93,12 @@ function Card1() {
 
     return (
         <>
+            {isFacebookBrowser && (
+                <div className="facebook-warning">
+                    🚨 Trình duyệt Facebook đang chặn tải xuống!  
+                    Vui lòng mở trang web này trong trình duyệt **Google Chrome**, **Safari**, hoặc **Microsoft Edge** để có trải nghiệm tốt nhất.
+                </div>
+            )}
             <div className="Card" style={{backgroundImage: "url('/Home-2.png')"}}>
                 <div className="container-main">
                     <div className="Card__inner">
