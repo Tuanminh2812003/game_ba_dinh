@@ -3,9 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 function Game() {
     const unityCanvasRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
     const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
     const [isMobile, setIsMobile] = useState(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
-    const [hidePopup, setHidePopup] = useState(false); // Trạng thái ẩn pop-up
+    const [hidePopup, setHidePopup] = useState(false);
 
     useEffect(() => {
         const checkOrientation = () => {
@@ -60,12 +61,13 @@ function Game() {
         };
     }, []);
 
-    // 🔹 Hàm bật Fullscreen chỉ cho Canvas Unity
+    // 🔹 Hàm bật/tắt Fullscreen cho Canvas
     const handleFullScreen = () => {
         if (!unityCanvasRef.current) return;
 
         if (document.fullscreenElement) {
             document.exitFullscreen();
+            setIsFullscreen(false);
             return;
         }
 
@@ -79,14 +81,26 @@ function Game() {
             unityCanvasRef.current.msRequestFullscreen();
         }
 
-        // 🔹 Đảm bảo Unity không bị load lại khi fullscreen
+        setIsFullscreen(true);
+
         setTimeout(() => {
             unityCanvasRef.current.focus();
         }, 500);
     };
 
     return (
-        <div style={{ width: "100%", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+        <div 
+            style={{ 
+                width: "100%", 
+                height: "auto", 
+                textAlign: "center", 
+                position: "relative", 
+                display: "flex", 
+                justifyContent: "center", 
+                flexDirection: "column", 
+                alignItems: "center" 
+            }}
+        >
             {isMobile && !isLandscape && !hidePopup && (
                 <div
                     style={{
@@ -129,7 +143,7 @@ function Game() {
                 </div>
             )}
 
-            <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
+            <div style={{ width: "100%", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
                 {!isLoaded && <p>Loading Unity Game...</p>}
                 <button
                     onClick={handleFullScreen} 
@@ -149,7 +163,7 @@ function Game() {
                     onMouseOver={(e) => e.target.style.backgroundColor = "#0056b3"}
                     onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
                 >
-                    Fullscreen
+                    {isFullscreen ? "Thoát Fullscreen" : "Fullscreen"}
                 </button>
                 <canvas
                     ref={unityCanvasRef}
