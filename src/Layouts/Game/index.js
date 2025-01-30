@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function Game() {
     const unityCanvasRef = useRef(null);
+    const inputRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
     const [isMobile, setIsMobile] = useState(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
@@ -11,9 +12,7 @@ function Game() {
         const checkOrientation = () => {
             setIsLandscape(window.innerWidth > window.innerHeight);
         };
-
         window.addEventListener("resize", checkOrientation);
-
         return () => {
             window.removeEventListener("resize", checkOrientation);
         };
@@ -34,7 +33,7 @@ function Game() {
                         showBanner: (msg, type) => console.log(msg, type),
                     };
 
-                    await window.createUnityInstance(
+                    const unityInstance = await window.createUnityInstance(
                         unityCanvasRef.current,
                         config,
                         (progress) => {
@@ -49,7 +48,6 @@ function Game() {
             }
         };
 
-        // Load Unity Loader Script
         const script = document.createElement("script");
         script.src = "/unity/Build/GameBaDinh3.loader.js";
         script.onload = loadUnity;
@@ -60,32 +58,37 @@ function Game() {
         };
     }, []);
 
-    // 🔹 Hàm bật chế độ Fullscreen + Tránh reload Unity trên mobile
+    // 🔹 Hàm bật Fullscreen và tự động mở bàn phím nếu cần nhập liệu
     const handleFullScreen = () => {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-            return;
-        }
+        if (unityCanvasRef.current) {
+            if (unityCanvasRef.current.requestFullscreen) {
+                unityCanvasRef.current.requestFullscreen();
+            } else if (unityCanvasRef.current.mozRequestFullScreen) { // Firefox
+                unityCanvasRef.current.mozRequestFullScreen();
+            } else if (unityCanvasRef.current.webkitRequestFullscreen) { // Chrome, Safari
+                unityCanvasRef.current.webkitRequestFullscreen();
+            } else if (unityCanvasRef.current.msRequestFullscreen) { // IE/Edge
+                unityCanvasRef.current.msRequestFullscreen();
+            }
 
-        const element = document.documentElement; // Toàn bộ trang
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) { // Firefox
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) { // Chrome, Safari
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { // IE/Edge
-            element.msRequestFullscreen();
+            // 🔹 Sau khi vào Fullscreen, focus vào input ẩn để mở bàn phím
+            setTimeout(() => {
+                inputRef.current.focus();
+            }, 500);
         }
+    };
 
-        // 🔹 Đảm bảo Unity không bị load lại sau khi fullscreen
-        setTimeout(() => {
-            unityCanvasRef.current.focus();
-        }, 500);
+    // 🔹 Khi người dùng bấm vào input trong Unity, focus vào input ẩn
+    const handleUnityInputFocus = () => {
+        if (isMobile) {
+            inputRef.current.focus();
+        }
     };
 
     return (
-        <div style={{ width: "100%", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ width: "100%", height: "100vh", textAlign: "center", position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            
+            {/* 🔹 Hiển thị cảnh báo khi màn hình ở chế độ dọc */}
             {isMobile && !isLandscape && !hidePopup && (
                 <div
                     style={{
@@ -130,7 +133,8 @@ function Game() {
 
             <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
                 {!isLoaded && <p>Loading Unity Game...</p>}
-                <div
+                
+                <button 
                     onClick={handleFullScreen} 
                     style={{
                         position: "absolute",
@@ -149,16 +153,31 @@ function Game() {
                     onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
                 >
                     Fullscreen
-                </div>
+                </button>
+
+                {/* 🔹 Unity Canvas */}
                 <canvas
                     ref={unityCanvasRef}
                     id="unity-canvas"
+                    onClick={handleUnityInputFocus} // 🔹 Khi bấm vào, tự động mở bàn phím
                     style={{
                         width: "100%",
                         height: "100%",
                         display: isLoaded ? "block" : "none",
                     }}
                 ></canvas>
+
+                {/* 🔹 Input ẩn để mở bàn phím */}
+                <input
+                    ref={inputRef}
+                    style={{
+                        position: "absolute",
+                        top: "-100px",
+                        opacity: 0,
+                        width: "1px",
+                        height: "1px",
+                    }}
+                />
             </div>
         </div>
     );
