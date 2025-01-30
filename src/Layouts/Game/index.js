@@ -6,7 +6,6 @@ function Game() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
     const [isMobile, setIsMobile] = useState(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
-    const [hidePopup, setHidePopup] = useState(false); // Trạng thái ẩn pop-up
 
     useEffect(() => {
         const checkOrientation = () => {
@@ -89,7 +88,7 @@ function Game() {
         <div style={{ width: "100%", height: "100vh", textAlign: "center", position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
             
             {/* 🔹 Hiển thị cảnh báo khi màn hình ở chế độ dọc */}
-            {isMobile && !isLandscape && !hidePopup && (
+            {isMobile && !isLandscape && (
                 <div
                     style={{
                         position: "fixed",
@@ -97,7 +96,7 @@ function Game() {
                         left: 0,
                         width: "100vw",
                         height: "100vh",
-                        backgroundColor: "rgba(0, 0, 0, 0.85)",
+                        backgroundColor: "#000",
                         color: "#fff",
                         display: "flex",
                         alignItems: "center",
@@ -109,25 +108,7 @@ function Game() {
                         fontWeight: "bold",
                     }}
                 >
-                    <p>📱 Xoay ngang màn hình để có trải nghiệm tốt hơn 🎮</p>
-                    <button
-                        onClick={() => setHidePopup(true)}
-                        style={{
-                            marginTop: "20px",
-                            padding: "10px 20px",
-                            fontSize: "16px",
-                            backgroundColor: "#ff4d4d",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                            transition: "0.3s",
-                        }}
-                        onMouseOver={(e) => e.target.style.backgroundColor = "#cc0000"}
-                        onMouseOut={(e) => e.target.style.backgroundColor = "#ff4d4d"}
-                    >
-                        Đóng
-                    </button>
+                    <p>📱 Vui lòng xoay ngang thiết bị của bạn để chơi game 🎮</p>
                 </div>
             )}
 
