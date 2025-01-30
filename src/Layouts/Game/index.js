@@ -60,19 +60,29 @@ function Game() {
         };
     }, []);
 
-    // 🔹 Hàm bật chế độ Fullscreen + Kích hoạt bàn phím
+    // 🔹 Hàm bật Fullscreen chỉ cho Canvas Unity
     const handleFullScreen = () => {
-        if (unityCanvasRef.current) {
-            if (unityCanvasRef.current.requestFullscreen) {
-                unityCanvasRef.current.requestFullscreen();
-            } else if (unityCanvasRef.current.mozRequestFullScreen) { // Firefox
-                unityCanvasRef.current.mozRequestFullScreen();
-            } else if (unityCanvasRef.current.webkitRequestFullscreen) { // Chrome, Safari
-                unityCanvasRef.current.webkitRequestFullscreen();
-            } else if (unityCanvasRef.current.msRequestFullscreen) { // IE/Edge
-                unityCanvasRef.current.msRequestFullscreen();
-            }
+        if (!unityCanvasRef.current) return;
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+            return;
         }
+
+        if (unityCanvasRef.current.requestFullscreen) {
+            unityCanvasRef.current.requestFullscreen();
+        } else if (unityCanvasRef.current.mozRequestFullScreen) { // Firefox
+            unityCanvasRef.current.mozRequestFullScreen();
+        } else if (unityCanvasRef.current.webkitRequestFullscreen) { // Chrome, Safari
+            unityCanvasRef.current.webkitRequestFullscreen();
+        } else if (unityCanvasRef.current.msRequestFullscreen) { // IE/Edge
+            unityCanvasRef.current.msRequestFullscreen();
+        }
+
+        // 🔹 Đảm bảo Unity không bị load lại khi fullscreen
+        setTimeout(() => {
+            unityCanvasRef.current.focus();
+        }, 500);
     };
 
     return (
@@ -121,7 +131,7 @@ function Game() {
 
             <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
                 {!isLoaded && <p>Loading Unity Game...</p>}
-                <div
+                <button
                     onClick={handleFullScreen} 
                     style={{
                         position: "absolute",
@@ -140,7 +150,7 @@ function Game() {
                     onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
                 >
                     Fullscreen
-                </div>
+                </button>
                 <canvas
                     ref={unityCanvasRef}
                     id="unity-canvas"
