@@ -3,12 +3,21 @@ import "./Card.scss";
 import { IoMdDownload } from "react-icons/io";
 import { FaShareAlt } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 
 function Card2() {
     const imageRef = useRef(); // Tham chiếu đến phần Card__inner__image
     const [previewImage, setPreviewImage] = useState(null); // State lưu ảnh xem trước
+    const [isFacebookBrowser, setIsFacebookBrowser] = useState(false);
+    
+        useEffect(() => {
+            // Kiểm tra xem có đang chạy trong trình duyệt của Facebook không
+            const ua = navigator.userAgent || navigator.vendor;
+            if (ua.includes("FBAN") || ua.includes("FBAV")) {
+                setIsFacebookBrowser(true);
+            }
+        }, []);
 
     const handleCapture = async () => {
         if (imageRef.current) {
@@ -121,6 +130,12 @@ function Card2() {
                         <div className="Card__inner__btn hide">
                             
                             <div className="Card__inner__btn__btn2" style={{width: "100%", flexDirection: "column"}}>
+                                {isFacebookBrowser && (
+                                    <div className="facebook-warning" style={{textAlign: "center", marginBottom:"12px"}}>
+                                        🚨 Trình duyệt Facebook không hỗ trợ tải xuống!  
+                                        Hãy dùng Chrome, Safari hoặc Microsoft Edge để có trải nghiệm tốt nhất!
+                                    </div>
+                                )}
                                 <button
                                     className="Card__inner__btn__btn2__download"
                                     onClick={handleCapture}

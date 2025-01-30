@@ -93,12 +93,6 @@ function Card1() {
 
     return (
         <>
-            {isFacebookBrowser && (
-                <div className="facebook-warning">
-                    🚨 Trình duyệt Facebook đang chặn tải xuống!  
-                    Vui lòng mở trang web này trong trình duyệt **Google Chrome**, **Safari**, hoặc **Microsoft Edge** để có trải nghiệm tốt nhất.
-                </div>
-            )}
             <div className="Card" style={{backgroundImage: "url('/Home-2.png')"}}>
                 <div className="container-main">
                     <div className="Card__inner">
@@ -136,6 +130,13 @@ function Card1() {
                         <div className="Card__inner__btn hide">
                             
                             <div className="Card__inner__btn__btn2" style={{width: "100%", flexDirection: "column"}}>
+                            {isFacebookBrowser && (
+                                <div className="facebook-warning" style={{textAlign: "center", marginBottom:"12px"}}>
+                                    🚨 Trình duyệt Facebook không hỗ trợ tải xuống!  
+                                    Hãy dùng Chrome, Safari hoặc Microsoft Edge để có trải nghiệm tốt nhất!
+                                </div>
+                            )}
+                                
                                 <button
                                     className="Card__inner__btn__btn2__download"
                                     onClick={handleCapture}
