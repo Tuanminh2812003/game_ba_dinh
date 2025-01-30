@@ -72,12 +72,6 @@ function Game() {
             } else if (unityCanvasRef.current.msRequestFullscreen) { // IE/Edge
                 unityCanvasRef.current.msRequestFullscreen();
             }
-
-            // 🔹 Kích hoạt focus vào Unity sau 500ms để bàn phím không bị tắt
-            setTimeout(() => {
-                unityCanvasRef.current.focus();
-                document.activeElement.blur(); // Bỏ focus trên phần tử khác
-            }, 500);
         }
     };
 
