@@ -127,7 +127,7 @@ function Game() {
 
             <div style={{ width: "80vw", height: "auto", textAlign: "center", position: "relative", display: "flex", justifyContent: "center" }}>
                 {!isLoaded && <p>Loading Unity Game...</p>}
-                <button 
+                <div
                     onClick={handleFullScreen} 
                     style={{
                         position: "absolute",
@@ -146,7 +146,7 @@ function Game() {
                     onMouseOut={(e) => e.target.style.backgroundColor = "#007bff"}
                 >
                     Fullscreen
-                </button>
+                </div>
                 <canvas
                     ref={unityCanvasRef}
                     id="unity-canvas"
